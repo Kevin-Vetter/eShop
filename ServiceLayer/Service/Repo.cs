@@ -40,6 +40,7 @@ namespace ServiceLayer.Service
             catch (Exception)
             {
                 Console.WriteLine("uh oh, stinky UwU - no uwser wit dis aidee cwould be fwound >.<' pwease tway again :3");
+
                 throw;
             }
             customer = updatedCustomer;
