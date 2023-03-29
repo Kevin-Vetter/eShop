@@ -1,8 +1,12 @@
+using DAL;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+var connectionString = builder.Configuration.GetConnectionString("PrimaryConnection");
 builder.Services.AddRazorPages();
-
+builder.Services.AddDbContext<eShopContext>(options => options.UseSqlServer(connectionString));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
