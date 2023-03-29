@@ -14,7 +14,7 @@ namespace ServiceLayer.Service
         //CRUD
         public void CreateNewCustomer(string firstName, string lastName, string adress, string email, bool disabled);
         public Customer GetCustomerById(int id);
-        public void UpdateCustomer(Customer customer);
+        public void UpdateCustomer(int id, string firstName, string lastName, string adress, string email);
         public void DeleteCustomer(int id);
         
         #endregion

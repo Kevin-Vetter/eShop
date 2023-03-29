@@ -7,6 +7,8 @@ namespace eShop.Pages
     public class IndexModel : PageModel
     {
         [BindProperty]
+        public int Id { get; set; }
+        [BindProperty]
         public string fName { get; set; }
         [BindProperty]
         public string lName { get; set; }
@@ -31,6 +33,11 @@ namespace eShop.Pages
         public void OnPost()
         {
             _repo.CreateNewCustomer(fName,lName,adress,mail,false);
+        }
+        public IActionResult OnPostUpdateCustomer()
+        {
+            _repo.UpdateCustomer(Id,fName,lName,adress,mail);
+            return Page();
         }
     }
 }
