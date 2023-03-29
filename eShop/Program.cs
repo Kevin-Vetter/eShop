@@ -1,4 +1,5 @@
 using DAL;
+using ServiceLayer.Service;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("PrimaryConnection");
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<eShopContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddScoped<IRepo,Repo>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

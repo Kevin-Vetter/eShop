@@ -7,7 +7,25 @@ public class Customer
     public string LastName { get; set; }
     public string Address { get; set; }
     public string Email { get; set; }
-    public Image ProfilePicture { get; }
+    public bool Disabled { get; set; }
+
+
+    public Customer(int id, string firstName,string lastName, string address, string email, bool disabled)
+    {
+        Id = id;
+        FirstName = firstName;
+        LastName = lastName;
+        Address = address;
+        Email = email;
+        Disabled = disabled;
+    }
+    public Customer(string firstName, string lastName, string address, string email,bool disabled)
+    {
+        FirstName = firstName;
+        LastName = lastName;
+        Address = address;
+        Email = email;
+        Disabled = disabled;
+    }
+
 }
-
-
