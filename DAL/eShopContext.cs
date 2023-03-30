@@ -24,13 +24,13 @@ namespace DAL
                 .EnableSensitiveDataLogging()
                 .LogTo(message => Debug.WriteLine(message));
 
-            if (optionsBuilder.IsConfigured)
+            if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder
                 .UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=eShop;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
             }
         }
-
+        /*
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
@@ -81,6 +81,6 @@ namespace DAL
             modelBuilder.Entity<Customer>()
                .HasData(customerFaker.Generate(1));
         }
-
+        */
     }
 }

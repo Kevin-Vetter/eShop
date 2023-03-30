@@ -27,6 +27,7 @@ namespace ServiceLayer.Service
         //MISC
         void UpdatePopularity(int id);
         public List<Product> Search(string searchQuery);
+        public List<Product> GetProductsPaging(int page, int numberOfProducts);
         #endregion
 
         #region Order

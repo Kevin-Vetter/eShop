@@ -1,4 +1,6 @@
-﻿namespace DAL.Model;
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace DAL.Model;
 
 public class Product
 {
@@ -10,9 +12,9 @@ public class Product
     public Category Category { get; set; }
     public int CategoryId { get; set; }
     public int Popularity { get; set; } = 0;
-
     public ICollection<Order> Orders { get; set; }
     public bool Disabled { get; set; } = false;
+
 
 }
 

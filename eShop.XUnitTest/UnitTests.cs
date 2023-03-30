@@ -1,9 +1,11 @@
 using Bogus;
 using DAL;
 using DAL.Model;
+using Microsoft.EntityFrameworkCore;
 using ServiceLayer.Service;
 using System.Collections.Immutable;
 using Xunit;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace XUnitTest;
 
@@ -119,8 +121,6 @@ public class UnitTests
         //Assert
         Assert.Equal(productToFind.Name, productFound.Name);
     }
-    #endregion
-
 
     [Fact]
     public void CreateNewOrderTest()
@@ -139,5 +139,19 @@ public class UnitTests
         Order order = _context.Orders.ToList().First();
         //Assert.Equal(testprod.OrderId, Order.OrderId);
     }
-   
+    
+    [Fact]
+    public void PagingTest()
+    {
+        //Arrange
+        var _context = ContextCreater.CreateContext();
+        var _repo = new Repo(_context);
+        CreateTestData(_context);
+
+        //Act
+        List<Product> products = _repo.GetProductsPaging(1, 2);
+
+        //Assert
+        Assert.Equal(2, products.Count);
+    }
 }

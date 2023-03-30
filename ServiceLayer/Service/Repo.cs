@@ -2,6 +2,7 @@
 using DAL;
 using DAL.Model;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 
 namespace ServiceLayer.Service
@@ -101,6 +102,13 @@ namespace ServiceLayer.Service
         {
             return _context.Products.Where(x => EF.Functions.Like(x.Name, $"%{searchQuery}%")).ToList();
         }
+        public List<Product> GetProductsPaging(int page, int numberOfProducts)
+        {
+            IQueryable<Product> query = _context.Products;
+
+            return query.Page(page, numberOfProducts).AsNoTracking().ToList();
+        }
+        
         #endregion
 
         #region Order
@@ -112,7 +120,7 @@ namespace ServiceLayer.Service
                 _context.Products.First(i => i.Id == productId)
             };
             Customer customer = _context.Customers.First(x=>x.Id == customerId);
-            var order = new Order { Customer = customer, Created = DateTime.Now, Amount = amount };
+            Order order = new Order { Customer = customer, Created = DateTime.Now, Amount = amount };
             order.Products = products;
             _context.Orders.Add(order);
             _context.SaveChanges();
