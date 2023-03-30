@@ -20,7 +20,7 @@ namespace ServiceLayer.Service
         {
             try
             {
-                return _context.Customers.FirstOrDefault(x => x.Id == id);
+                return _context.Customers.AsNoTracking().FirstOrDefault(x => x.Id == id);
             }
             catch (Exception)
             {
@@ -68,7 +68,7 @@ namespace ServiceLayer.Service
         {
             try
             {
-                return _context.Products.FirstOrDefault(x => x.Id == id);
+                return _context.Products.AsNoTracking().FirstOrDefault(x => x.Id == id);
             }
             catch (Exception)
             {
@@ -83,7 +83,7 @@ namespace ServiceLayer.Service
             Product product;
             try
             {
-                product = _context.Products.AsNoTracking().First(x => x.Id == updatedProduct.Id);
+                product = GetProductById(id);
             }
             catch (Exception)
             {
@@ -103,6 +103,12 @@ namespace ServiceLayer.Service
             product.Disabled = true;
             _context.SaveChanges();
         }
+
+        public void UpdatePopularity(int id)
+        {
+            Product product = GetProductById(id);
+
+        }
         #endregion
 
         #region Order
@@ -116,7 +122,7 @@ namespace ServiceLayer.Service
         {
             try
             {
-                return _context.Orders.FirstOrDefault(x => x.Id == id);
+                return _context.Orders.AsNoTracking().FirstOrDefault(x => x.Id == id);
             }
             catch (Exception)
             {

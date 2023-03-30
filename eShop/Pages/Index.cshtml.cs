@@ -28,8 +28,8 @@ namespace eShop.Pages
 
         public void OnGet()
         {
-
         }
+       
         public void OnPost()
         {
             _repo.CreateNewCustomer(fName,lName,adress,mail);
