@@ -1,3 +1,4 @@
+using Bogus;
 using DAL;
 using DAL.Model;
 using ServiceLayer.Service;
@@ -8,20 +9,135 @@ namespace XUnitTest;
 
 public class UnitTests
 {
-    [Fact]
-    public async Task TestGetProductById()
+    private void CreateTestData(eShopContext _context)
     {
-        //Arange
-        var _context =  ContextCreater.CreateContext();
-        var _repo = new Repo(_context);
+        Faker<Brand> brandFaker = new Faker<Brand>()
+           .UseSeed(2)
+           .RuleFor(x => x.BrandName, x => x.Company.CompanyName());
+        brandFaker.Generate(5).ForEach(bf => _context.Brands.Add(bf));
+        _context.SaveChanges();
 
-        //Act
-        Product product = _repo.GetProductById(2);
+        Faker<Category> categoryFaker = new Faker<Category>()
+          .UseSeed(2)
+          .RuleFor(x => x.CatName, x => x.Commerce.Categories(5).First());
+        categoryFaker.Generate(5).ForEach(cf => _context.Categories.Add(cf));
+        _context.SaveChanges();
 
+        Faker<Product> productFaker = new Faker<Product>()
+            .UseSeed(2)
+            .RuleFor(x => x.Name, x => x.Commerce.ProductName())
+            .RuleFor(x => x.Price, x => x.Commerce.Price().First())
+            .RuleFor(x => x.BrandId, x => x.Random.Number(4) + 1)
+            .RuleFor(x => x.CategoryId, x => x.Random.Number(4) + 1)
+            .RuleFor(x => x.Popularity, x => x.Random.Number());
+        productFaker.Generate(10).ForEach(pf => _context.Products.Add(pf));
+        _context.SaveChanges();
 
-
-        //Assert
-        Assert.Equal("Ductape 30m", $"{product.Name}");
+        Faker<Customer> customerFaker = new Faker<Customer>()
+          .UseSeed(2)
+          .RuleFor(x => x.FirstName, x => x.Person.FirstName)
+          .RuleFor(x => x.LastName, x => x.Person.LastName)
+          .RuleFor(x => x.Address, x => x.Person.Address.Street)
+          .RuleFor(x => x.Email, x => x.Person.Email);
+        customerFaker.Generate(1).ForEach(cf => _context.Customers.Add(cf));
+        _context.SaveChanges();
 
     }
+
+    [Fact]
+    public void CreateNewProductTest()
+    {
+        //Arrange
+        var _context = ContextCreater.CreateContext();
+        var _repo = new Repo(_context);
+        Product productToCreate = new Product
+        {
+            Id = 1,
+            Name = "abc",
+            Price = 124.95M,
+            BrandId = 3,
+            CategoryId = 2,
+            Popularity = 1
+        };
+
+        //Act
+        _repo.CreateNewProduct(productToCreate.Name, productToCreate.Price, productToCreate.BrandId, productToCreate.CategoryId);
+        Product productFromDB = _repo.GetProductById(1);
+
+        //Assert
+        Assert.Equal(productToCreate.Name, productFromDB.Name);
+        Assert.Equal(productToCreate.Id, productFromDB.Id);
+    }
+
+    [Fact]
+    public void DeleteProductTest()
+    {
+        //Arrange
+        var _context = ContextCreater.CreateContext();
+        var _repo = new Repo(_context);
+        CreateTestData(_context);
+
+        //Act
+        _repo.DeleteProduct(4);
+        var product = _repo.GetProductById(4);
+
+        //Assert
+        Assert.True(product.Disabled);
+    }
+
+    [Fact]
+    public void UpdateProductTest()
+    {
+        //Arrange
+        var _context = ContextCreater.CreateContext();
+        var _repo = new Repo(_context);
+        CreateTestData(_context);
+
+        //Act
+        Product oldProduct = _repo.GetProductById(5);
+        oldProduct.Name = "abc";
+        _repo.UpdateProduct(oldProduct);
+        Product newProduct = _repo.GetProductById(5);
+
+        //Assert
+        Assert.NotEqual(oldProduct.Name, newProduct.Name);
+        Assert.Equal(oldProduct.Id, newProduct.Id);
+    }
+
+    [Fact]
+    public void SearchProductTest()
+    {
+        //Arrange
+        var _context = ContextCreater.CreateContext();
+        var _repo = new Repo(_context);
+        CreateTestData(_context);
+
+        //Act
+        Product productToFind = _repo.GetProductById(5);
+        Product productFound = _repo.Search("Metal").First();
+
+        //Assert
+        Assert.Equal(productToFind.Name, productFound.Name);
+    }
+    #endregion
+
+
+    [Fact]
+    public void CreateNewOrderTest()
+    {
+        //Arrange
+        var _context = ContextCreater.CreateContext();
+        var _repo = new Repo(_context);
+        CreateTestData(_context);
+
+        //Act
+        Customer customer = _repo.GetCustomerById(1);
+        Product product = _repo.GetProductById(1);
+        _repo.CreateNewOrder(customer.Id, product.Id, 4);
+
+        //Assert
+        Order order = _context.Orders.ToList().First();
+        //Assert.Equal(testprod.OrderId, Order.OrderId);
+    }
+   
 }

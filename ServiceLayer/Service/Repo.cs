@@ -1,6 +1,8 @@
-﻿using DAL;
+﻿using Azure;
+using DAL;
 using DAL.Model;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace ServiceLayer.Service
 {
@@ -12,7 +14,7 @@ namespace ServiceLayer.Service
         #region Customer
         public void CreateNewCustomer(string firstName, string lastName, string adress, string email)
         {
-            _context.Customers.Add(new Customer(firstName, lastName, adress, email, false));
+            _context.Customers.Add(new Customer { FirstName = firstName, LastName = lastName, Address = adress, Email = email });
             _context.SaveChanges();
         }
 
@@ -29,22 +31,12 @@ namespace ServiceLayer.Service
             }
         }
 
-        public void UpdateCustomer(int id, string firstName, string lastName, string adress, string email)
+        public void UpdateCustomer(Customer newCustomer)
         {
-            Customer updatedCustomer = new(id, firstName, lastName, adress, email, false);
-            Customer customer;
-            try
-            {
-                customer = _context.Customers.AsNoTracking().First(x => x.Id == updatedCustomer.Id);
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("uh oh, stinky UwU - no uwser wit dis aidee cwould be fwound >.<' pwease tway again :3");
 
-                throw;
-            }
-            customer = updatedCustomer;
-            _context.Entry(customer).State = EntityState.Modified;
+            Customer oldCustomer = _context.Customers.First(x => x.Id == newCustomer.Id);
+            oldCustomer = newCustomer;
+
             _context.SaveChanges();
         }
 
@@ -53,12 +45,13 @@ namespace ServiceLayer.Service
             Customer customer = GetCustomerById(id);
 
             customer.Disabled = true;
+            _context.Entry(customer).State = EntityState.Modified;
             _context.SaveChanges();
         }
         #endregion
 
         #region Product
-        public void CreateNewProduct(string name, double price, int brandId, int categoryId)
+        public void CreateNewProduct(string name, decimal price, int brandId, int categoryId)
         {
             _context.Products.Add(new Product { Name = name, Price = price, BrandId = brandId, CategoryId = categoryId });
             _context.SaveChanges();
@@ -77,44 +70,51 @@ namespace ServiceLayer.Service
             }
         }
 
-        public void UpdateProduct(int id, string name, double price, int brandId, int categoryId)
+        public void UpdateProduct(Product newProduct)
         {
-            Product updatedProduct = new Product { Id = id, Name = name, Price = price, BrandId = brandId, CategoryId = categoryId };
-            Product product;
-            try
-            {
-                product = GetProductById(id);
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("uh oh, stinky UwU - no uwser wit dis aidee cwould be fwound >.<' pwease tway again :3");
+            Product oldProduct = _context.Products.First(x => x.Id == newProduct.Id);
+            oldProduct = newProduct;
 
-                throw;
-            }
-            product = updatedProduct;
-            _context.Entry(product).State = EntityState.Modified;
             _context.SaveChanges();
         }
 
         public void DeleteProduct(int id)
         {
-            Product product = GetProductById(id);
+            var query = from products in _context.Products
+                        where products.Id == id
+                        select products;
+
+            Product product = query.First();
 
             product.Disabled = true;
+            _context.Entry(product).State = EntityState.Modified;
             _context.SaveChanges();
         }
 
         public void UpdatePopularity(int id)
         {
             Product product = GetProductById(id);
-
+            product.Popularity++;
+            UpdateProduct(product);
+        }
+        public List<Product> Search(string searchQuery)
+        {
+            return _context.Products.Where(x => EF.Functions.Like(x.Name, $"%{searchQuery}%")).ToList();
         }
         #endregion
 
         #region Order
-        public void CreateNewOrder(int customerId, int amount)
+        // here i should really use somethin to connect productid & amount and also make it scaleable
+        public void CreateNewOrder(int customerId, int productId, int amount)
         {
-            _context.Orders.Add(new Order { Created = DateTime.Now, CustomerId= customerId, Amount = amount});
+            ICollection<Product> products = new List<Product>
+            {
+                _context.Products.First(i => i.Id == productId)
+            };
+            Customer customer = _context.Customers.First(x=>x.Id == customerId);
+            var order = new Order { Customer = customer, Created = DateTime.Now, Amount = amount };
+            order.Products = products;
+            _context.Orders.Add(order);
             _context.SaveChanges();
         }
 

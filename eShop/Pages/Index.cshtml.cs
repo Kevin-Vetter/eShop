@@ -28,6 +28,7 @@ namespace eShop.Pages
 
         public void OnGet()
         {
+            _repo.CreateNewOrder(1,1,4);
         }
        
         public void OnPost()
@@ -36,7 +37,6 @@ namespace eShop.Pages
         }
         public IActionResult OnPostUpdateCustomer()
         {
-            _repo.UpdateCustomer(Id,fName,lName,adress,mail);
             return Page();
         }
     }
