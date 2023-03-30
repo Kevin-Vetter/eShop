@@ -10,9 +10,9 @@ namespace ServiceLayer.Service
         public Repo(eShopContext context) { _context = context; }
 
         #region Customer
-        public void CreateNewCustomer(string firstName, string lastName, string adress, string email, bool disabled)
+        public void CreateNewCustomer(string firstName, string lastName, string adress, string email)
         {
-            _context.Customers.Add(new Customer(firstName, lastName, adress, email, disabled));
+            _context.Customers.Add(new Customer(firstName, lastName, adress, email, false));
             _context.SaveChanges();
         }
 
@@ -55,6 +55,76 @@ namespace ServiceLayer.Service
             customer.Disabled = true;
             _context.SaveChanges();
         }
+        #endregion
+
+        #region Product
+        public void CreateNewProduct(string name, double price, int brandId, int categoryId)
+        {
+            _context.Products.Add(new Product { Name = name, Price = price, BrandId = brandId, CategoryId = categoryId });
+            _context.SaveChanges();
+        }
+
+        public Product GetProductById(int id)
+        {
+            try
+            {
+                return _context.Products.FirstOrDefault(x => x.Id == id);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("uh oh, stwinky UwU - no uwser wit dis aidee cwould be fwound >.<' pwease tway again :3");
+                throw;
+            }
+        }
+
+        public void UpdateProduct(int id, string name, double price, int brandId, int categoryId)
+        {
+            Product updatedProduct = new Product { Id = id, Name = name, Price = price, BrandId = brandId, CategoryId = categoryId };
+            Product product;
+            try
+            {
+                product = _context.Products.AsNoTracking().First(x => x.Id == updatedProduct.Id);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("uh oh, stinky UwU - no uwser wit dis aidee cwould be fwound >.<' pwease tway again :3");
+
+                throw;
+            }
+            product = updatedProduct;
+            _context.Entry(product).State = EntityState.Modified;
+            _context.SaveChanges();
+        }
+
+        public void DeleteProduct(int id)
+        {
+            Product product = GetProductById(id);
+
+            product.Disabled = true;
+            _context.SaveChanges();
+        }
+        #endregion
+
+        #region Order
+        public void CreateNewOrder(int customerId, int amount)
+        {
+            _context.Orders.Add(new Order { Created = DateTime.Now, CustomerId= customerId, Amount = amount});
+            _context.SaveChanges();
+        }
+
+        public Order GetOrderById(int id)
+        {
+            try
+            {
+                return _context.Orders.FirstOrDefault(x => x.Id == id);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("uh oh, stwinky UwU - no uwser wit dis aidee cwould be fwound >.<' pwease tway again :3");
+                throw;
+            }
+        }
+
         #endregion
     }
 }

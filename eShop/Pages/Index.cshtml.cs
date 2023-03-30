@@ -32,7 +32,7 @@ namespace eShop.Pages
         }
         public void OnPost()
         {
-            _repo.CreateNewCustomer(fName,lName,adress,mail,false);
+            _repo.CreateNewCustomer(fName,lName,adress,mail);
         }
         public IActionResult OnPostUpdateCustomer()
         {

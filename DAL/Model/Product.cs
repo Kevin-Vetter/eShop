@@ -9,9 +9,10 @@ public class Product
     public int BrandId { get; set; }
     public Category Category { get; set; }
     public int CategoryId { get; set; }
-    public int Popularity { get; set; }
-    public Image Thumbnail { get; set; }
-    public int ImageId { get; set; }
+    public int Popularity { get; set; } = 0;
 
     public ICollection<Order> Orders { get; set; }
+    public bool Disabled { get; set; } = false;
+
 }
+
