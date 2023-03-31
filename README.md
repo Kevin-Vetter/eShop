@@ -4,9 +4,7 @@
 * [Intro](#Intro)
 * [Instructions](#Instructions)
 * [Requirements](#Requirements)
-* [Tags](#Tags)
-* [Changelog](#Changelog)
-* [To-do](#To-do)
+
 
 
 ## Intro
