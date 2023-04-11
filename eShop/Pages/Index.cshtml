@@ -4,25 +4,3 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <form method="post">
-        <input type="text" asp-for="fName" placeholder="fname"/>
-        <input type="text" asp-for="lName" placeholder="lname"/>
-        <input type="text" asp-for="adress" placeholder="address"/>
-        <input type="text" asp-for="mail" placeholder="mail"/>
-
-        <input type="submit" />
-    </form>
-</div>
-
-<div class="text-center">
-    <form method="post">
-        <input type="text" asp-for="Id" placeholder="id" />
-        <input type="text" asp-for="fName" placeholder="fname" />
-        <input type="text" asp-for="lName" placeholder="lname" />
-        <input type="text" asp-for="adress" placeholder="address" />
-        <input type="text" asp-for="mail" placeholder="mail" />
-
-        <input type="submit" asp-page-handler="UpdateCustomer" />
-    </form>
-</div>

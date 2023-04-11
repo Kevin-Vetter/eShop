@@ -1,0 +1,28 @@
+using DAL.Model;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using ServiceLayer.Service;
+
+namespace eShop.Pages
+{
+    public class ProductsModel : PageModel
+    {
+
+        private List<Product> products;
+
+        private readonly ILogger<ProductsModel> _logger;
+        private readonly IRepo _repo;
+
+        public ProductsModel(ILogger<ProductsModel> logger, IRepo repo)
+        {
+            _logger = logger;
+            _repo = repo;
+        }
+
+
+        public void OnGet()
+        {
+            products = _repo.GetAllProducts();
+        }
+    }
+}

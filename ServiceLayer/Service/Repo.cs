@@ -52,6 +52,9 @@ namespace ServiceLayer.Service
         #endregion
 
         #region Product
+
+        public List<Product> GetAllProducts() => _context.Products.AsNoTracking().ToList();
+
         public void CreateNewProduct(string name, decimal price, int brandId, int categoryId)
         {
             _context.Products.Add(new Product { Name = name, Price = price, BrandId = brandId, CategoryId = categoryId });
