@@ -2,3 +2,8 @@
 @model eShop.Pages.ProductsModel
 @{
 }
+
+@foreach (var prod in Model.Products)
+{
+    <h1>@prod.Name</h1>
+}

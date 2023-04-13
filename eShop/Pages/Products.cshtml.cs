@@ -8,7 +8,7 @@ namespace eShop.Pages
     public class ProductsModel : PageModel
     {
 
-        private List<Product> products;
+        public List<Product> Products;
 
         private readonly ILogger<ProductsModel> _logger;
         private readonly IRepo _repo;
@@ -22,7 +22,7 @@ namespace eShop.Pages
 
         public void OnGet()
         {
-            products = _repo.GetAllProducts();
+            Products = _repo.GetAllProducts();
         }
     }
 }
