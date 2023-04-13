@@ -53,7 +53,17 @@ namespace ServiceLayer.Service
 
         #region Product
 
-        public List<Product> GetAllProducts() => _context.Products.AsNoTracking().ToList();
+        public List<Product> GetAllProducts()
+        {
+            List<Product> products = _context.Products.AsNoTracking().ToList();
+            List<Product> finalProducts = new List<Product>();
+
+            foreach (Product product in products)
+            {
+                finalProducts.Add(GetProductById(product.Id));
+            }
+            return finalProducts;
+        }
 
         public void CreateNewProduct(string name, decimal price, int brandId, int categoryId)
         {
@@ -65,7 +75,10 @@ namespace ServiceLayer.Service
         {
             try
             {
-                return _context.Products.AsNoTracking().FirstOrDefault(x => x.Id == id);
+                Product product = _context.Products.AsNoTracking().FirstOrDefault(x => x.Id == id);
+                product.Brand = _context.Brands.FirstOrDefault(x => x.Id == product.BrandId);
+                product.Category = _context.Categories.FirstOrDefault(x => x.Id == product.CategoryId);
+                return product;
             }
             catch (Exception)
             {
@@ -111,7 +124,7 @@ namespace ServiceLayer.Service
 
             return query.Page(page, numberOfProducts).AsNoTracking().ToList();
         }
-        
+
         #endregion
 
         #region Order
@@ -122,7 +135,7 @@ namespace ServiceLayer.Service
             {
                 _context.Products.First(i => i.Id == productId)
             };
-            Customer customer = _context.Customers.First(x=>x.Id == customerId);
+            Customer customer = _context.Customers.First(x => x.Id == customerId);
             Order order = new Order { Customer = customer, Created = DateTime.Now, Amount = amount };
             order.Products = products;
             _context.Orders.Add(order);

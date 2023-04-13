@@ -3,7 +3,11 @@
 @{
 }
 
-@foreach (var prod in Model.Products)
-{
-    <h1>@prod.Name</h1>
-}
+<div class="container">
+    <div class="row g-5">
+        @foreach (var prod in Model.Products)
+        {
+            <partial name="_Product" model="prod" />
+        }
+    </div>
+</div>

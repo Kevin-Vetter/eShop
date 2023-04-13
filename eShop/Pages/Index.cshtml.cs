@@ -16,6 +16,10 @@ namespace eShop.Pages
             _repo = repo;
         }
 
+        public IActionResult OnGet()
+        {
+            return RedirectToPage("Products");
+        }
         
     }
 }

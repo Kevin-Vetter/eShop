@@ -9,6 +9,7 @@ namespace eShop.Pages
     {
 
         public List<Product> Products;
+        public Product Product;
 
         private readonly ILogger<ProductsModel> _logger;
         private readonly IRepo _repo;
