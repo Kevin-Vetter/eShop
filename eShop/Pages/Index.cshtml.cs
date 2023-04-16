@@ -18,7 +18,7 @@ namespace eShop.Pages
 
         public IActionResult OnGet()
         {
-            return RedirectToPage("Products");
+            return RedirectToPage("Products/All");
         }
         
     }

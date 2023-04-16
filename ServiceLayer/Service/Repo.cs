@@ -53,17 +53,7 @@ namespace ServiceLayer.Service
 
         #region Product
 
-        public List<Product> GetAllProducts()
-        {
-            List<Product> products = _context.Products.AsNoTracking().ToList();
-            List<Product> finalProducts = new List<Product>();
-
-            foreach (Product product in products)
-            {
-                finalProducts.Add(GetProductById(product.Id));
-            }
-            return finalProducts;
-        }
+        public List<Product> GetAllProducts() => _context.Products.Include(b => b.Brand).Include(c => c.Category).AsNoTracking().ToList();
 
         public void CreateNewProduct(string name, decimal price, int brandId, int categoryId)
         {
@@ -75,10 +65,7 @@ namespace ServiceLayer.Service
         {
             try
             {
-                Product product = _context.Products.AsNoTracking().FirstOrDefault(x => x.Id == id);
-                product.Brand = _context.Brands.FirstOrDefault(x => x.Id == product.BrandId);
-                product.Category = _context.Categories.FirstOrDefault(x => x.Id == product.CategoryId);
-                return product;
+                return _context.Products.Include(b=>b.Brand).Include(c=>c.Category).AsNoTracking().FirstOrDefault(x => x.Id == id);
             }
             catch (Exception)
             {
@@ -116,7 +103,7 @@ namespace ServiceLayer.Service
         }
         public List<Product> Search(string searchQuery)
         {
-            return _context.Products.Where(x => EF.Functions.Like(x.Name, $"%{searchQuery}%")).ToList();
+            return _context.Products.Include(b=>b.Brand).Where(x => EF.Functions.Like(x.Name, $"%{searchQuery}%")|| EF.Functions.Like(x.Brand.BrandName, $"%{searchQuery}%")).ToList();
         }
         public List<Product> GetProductsPaging(int page, int numberOfProducts)
         {
