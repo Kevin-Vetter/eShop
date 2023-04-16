@@ -5,16 +5,16 @@ using ServiceLayer.Service;
 
 namespace eShop.Pages
 {
-    public class ProductsModel : PageModel
+    public class AllModel : PageModel
     {
 
         public List<Product> Products;
         public Product Product;
 
-        private readonly ILogger<ProductsModel> _logger;
+        private readonly ILogger<AllModel> _logger;
         private readonly IRepo _repo;
 
-        public ProductsModel(ILogger<ProductsModel> logger, IRepo repo)
+        public AllModel(ILogger<AllModel> logger, IRepo repo)
         {
             _logger = logger;
             _repo = repo;
