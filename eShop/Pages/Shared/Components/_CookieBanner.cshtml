@@ -1,7 +1,7 @@
 ﻿@{
     if (Context.Request.Cookies["useCookies"] != "true")
     {
-        <div class="modal-frame modal-bottom fixed-bottom" id="cookieBanner">
+        <div class="bg-light modal-frame modal-bottom fixed-bottom" id="cookieBanner">
             <div class="modal-body py-1">
                 <div class="d-flex justify-content-center align-items-center my-3">
                     <p class="mb-0 px-2">We use functional cookies to improve your website experience</p>
@@ -14,7 +14,7 @@
         <script>
             function AcceptCookies() {
                 document.getElementById('cookieBanner').style.display = 'none';
-                document.cookie = "useCookies=true";
+                document.cookie = "useCookies=true;path=/";
             }
 
             function RejectCookies() {

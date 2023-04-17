@@ -16,6 +16,7 @@ namespace ServiceLayer.Service
         public Customer GetCustomerById(int id);
         public void UpdateCustomer(Customer newCustomer);
         public void DeleteCustomer(int id);
+        Customer GetCustomerByEmail(string email);
         #endregion
 
         #region Product

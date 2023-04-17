@@ -8,7 +8,33 @@
         <div class="card-body border-top">
             <h5 class="card-title">@Model.Name</h5>
             <p class="card-text">@Model.Brand.BrandName</p>
-            <a href="Product?id=@Model.Id" class="btn btn-success">View</a><span class="float-end">@Model.Price</span>
+             @*<a href="Product?id=@Model.Id" class="btn btn-success">View</a><span class="float-end">@Model.Price</span>*@
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal-@Model.Id">
+                Launch demo modal
+            </button>
+
+        </div>
+    </div>
+</div>
+
+<!-- Product Modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal-@Model.Id" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@Model.Name</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
         </div>
     </div>
 </div>

@@ -15,18 +15,24 @@
             <form method="post">
                 <!-- Email input -->
                 <div class="form-outline mb-4">
-                    <input asp-for="Email" type="email" id="form1Example13" class="form-control form-control-lg" required/>
                     <label class="form-label" for="form1Example13">Email address</label>
+                    <input asp-for="Email" type="email" id="form1Example13" class="form-control form-control-lg" required />
                 </div>
 
                 <!-- Password input -->
                 <div class="form-outline mb-4">
-                    <input type="password" id="form1Example23" class="form-control form-control-lg" />
                     <label class="form-label" for="form1Example23">Password</label>
+                    <input type="password" id="form1Example23" class="form-control form-control-lg" />
                 </div>
 
+                @if (!Model.UserFound)
+                {
+                    <p class="alert-warning">No user with that email was found.</p>
+                }
+
+                <a href="/signup">Register here</a><br>
                 <!-- Submit button -->
-                <input type="submit" class="btn btn-primary btn-lg btn-block" value="Log in"/>
+                <input type="submit" class="btn btn-primary btn-lg btn-block mt-2" value="Log in" />
             </form>
         </div>
     </div>

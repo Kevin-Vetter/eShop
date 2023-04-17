@@ -1,3 +1,4 @@
+using DAL.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ServiceLayer.Service;
@@ -8,6 +9,7 @@ namespace eShop.Pages
     {
         [BindProperty]
         public string Email { get; set; }
+        public bool UserFound { get; set; } = true;
 
         private readonly ILogger<LoginModel> _logger;
         private readonly IRepo _repo;
@@ -32,8 +34,20 @@ namespace eShop.Pages
         {
             if (Email != null)
             {
-                Response.Cookies.Append("loggedIn", "true");
-                Response.Cookies.Append("user", Email);
+                Customer user = _repo.GetCustomerByEmail(Email);
+                try
+                {
+                    Response.Cookies.Append("loggedIn", "true");
+                    Response.Cookies.Append("user", user.Email);
+                    UserFound = true;
+                    return RedirectToPage("Index");
+                }
+                catch (Exception e)
+                {
+                    Response.Cookies.Append("loggedIn", "false");
+                    Console.WriteLine(e);
+                    UserFound = false;
+                }
             }
 
             return Page();

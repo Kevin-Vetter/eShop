@@ -32,6 +32,19 @@ namespace ServiceLayer.Service
             }
         }
 
+        public Customer GetCustomerByEmail(string email)
+        {
+            try
+            {
+                return _context.Customers.AsNoTracking().FirstOrDefault(x => x.Email == email);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("uh oh, stwinky UwU - no uwser wit dis aidee cwould be fwound >.<' pwease tway again :3");
+                throw;
+            }
+        }
+
         public void UpdateCustomer(Customer newCustomer)
         {
 
