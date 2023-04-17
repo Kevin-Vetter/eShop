@@ -6,7 +6,8 @@ namespace eShop.Pages
 {
     public class LoginModel : PageModel
     {
-        public string Email { get; set; } 
+        [BindProperty]
+        public string Email { get; set; }
 
         private readonly ILogger<LoginModel> _logger;
         private readonly IRepo _repo;
@@ -17,8 +18,25 @@ namespace eShop.Pages
             _repo = repo;
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            if (Request.Cookies["loggedIn"] == "true")
+            {
+                return RedirectToPage("Index");
+            }
+
+            return Page();
+        }
+
+        public IActionResult OnPost()
+        {
+            if (Email != null)
+            {
+                Response.Cookies.Append("loggedIn", "true");
+                Response.Cookies.Append("user", Email);
+            }
+
+            return Page();
         }
     }
 }

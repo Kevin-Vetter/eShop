@@ -64,8 +64,9 @@ namespace DAL
                 .RuleFor(x => x.Price, x => x.Commerce.Price().First())
                 .RuleFor(x => x.BrandId, x => x.Random.Number(4) + 1)
                 .RuleFor(x => x.CategoryId, x => x.Random.Number(4) + 1)
-                .RuleFor(x => x.Popularity, x => x.Random.Number());
-           
+                .RuleFor(x => x.Popularity, x => x.Random.Number())
+                .RuleFor(x=> x.ImgPath, "/comingSoon.jpg");
+                  
             modelBuilder.Entity<Product>()
                .HasData(productFaker.Generate(10));
 

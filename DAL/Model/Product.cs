@@ -13,8 +13,8 @@ public class Product
     public int CategoryId { get; set; }
     public int Popularity { get; set; } = 0;
     public ICollection<Order> Orders { get; set; }
+    public string ImgPath { get; set; }
     public bool Disabled { get; set; } = false;
-
 
 }
 
