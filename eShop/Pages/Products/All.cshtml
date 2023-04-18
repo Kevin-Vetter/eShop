@@ -11,3 +11,28 @@
         }
     </div>
 </div>
+
+<script>
+    function AddToCart(id) {
+        var cookies = document.cookie.split(';');
+        var cartValue;
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            if (cookie.startsWith('Cart=')) {
+                cartValue = cookie.substring('Cart='.length, cookie.length);
+                break;
+            }
+        }
+        let jason = JSON.parse(cartValue);
+
+        if (jason.ProduktId.includes(id)) {
+            jason.Amount[jason.ProduktId.indexOf(id)]++;
+        }
+        else {
+            jason.ProduktId.push(id);
+            jason.Amount.push("1");
+        }
+        document.cookie = 'Cart=' + JSON.stringify(jason) + ';path=/';
+        location.reload();
+    }
+</script>
