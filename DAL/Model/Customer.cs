@@ -8,5 +8,6 @@ public class Customer
     public string Address { get; set; }
     public string Email { get; set; }
     public bool Disabled { get; set; }
+    public bool Admin { get; set; } = false;
 
 }

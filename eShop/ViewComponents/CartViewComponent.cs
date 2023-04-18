@@ -1,4 +1,5 @@
-﻿using eShop.Pages;
+﻿using DAL.Model;
+using eShop.Pages;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.Service;
 
@@ -10,7 +11,7 @@ namespace eShop.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            return View();
+            return View(new List<Product>());
         }
     }
 }

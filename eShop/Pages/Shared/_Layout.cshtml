@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/eShop.styles.css" asp-append-version="true" />
+    <script src="https://kit.fontawesome.com/059699d8dd.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <header>
@@ -23,15 +24,17 @@
                         </li>
                     </ul>
 
-                    @*@await Component.InvokeAsync("Cart")*@
 
                     @if (Context.Request.Cookies["loggedIn"] == "true")
                     {
                         <span class="align-middle">Welcome @Context.Request.Cookies["user"]!</span>
+                        @await Component.InvokeAsync("Cart")
                         <button class="btn btn-lg" onclick="location.href = '/logout'">Log out</button>
                     }
                     else
                     {
+
+                        @await Component.InvokeAsync("Cart")
                         <button class="btn btn-lg" onclick="location.href = '/login'">Log in</button>
                     }
                 </div>

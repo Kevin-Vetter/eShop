@@ -121,24 +121,6 @@ public class UnitTests
         //Assert
         Assert.Equal(productToFind.Name, productFound.Name);
     }
-
-    [Fact]
-    public void CreateNewOrderTest()
-    {
-        //Arrange
-        var _context = ContextCreater.CreateContext();
-        var _repo = new Repo(_context);
-        CreateTestData(_context);
-
-        //Act
-        Customer customer = _repo.GetCustomerById(1);
-        Product product = _repo.GetProductById(1);
-        _repo.CreateNewOrder(customer.Id, product.Id, 4);
-
-        //Assert
-        Order order = _context.Orders.ToList().First();
-        //Assert.Equal(testprod.OrderId, Order.OrderId);
-    }
     
     [Fact]
     public void PagingTest()

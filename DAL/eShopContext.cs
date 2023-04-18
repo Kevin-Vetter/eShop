@@ -17,6 +17,7 @@ namespace DAL
         public DbSet<Image> Images { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<OrderProducts> OrderProducts { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -33,6 +34,15 @@ namespace DAL
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            modelBuilder.Entity<OrderProducts>().HasKey(x => new
+            {
+                x.OrderId,
+                x.ProductId
+            });
+
+
+            //seeding
 
             int brandId = 1;
             int catId = 1;
@@ -65,7 +75,8 @@ namespace DAL
                 .RuleFor(x => x.BrandId, x => x.Random.Number(4) + 1)
                 .RuleFor(x => x.CategoryId, x => x.Random.Number(4) + 1)
                 .RuleFor(x => x.Popularity, x => x.Random.Number())
-                .RuleFor(x=> x.ImgPath, "/comingSoon.jpg");
+                .RuleFor(x=> x.ImgPath, "/comingSoon.jpg")
+                .RuleFor(x=> x.Description, x=>x.Lorem.Paragraphs(2));
                   
             modelBuilder.Entity<Product>()
                .HasData(productFaker.Generate(10));

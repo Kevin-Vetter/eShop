@@ -129,15 +129,21 @@ namespace ServiceLayer.Service
 
         #region Order
         // here i should really use somethin to connect productid & amount and also make it scaleable
-        public void CreateNewOrder(int customerId, int productId, int amount)
+        public void CreateNewOrder(int customerId, Cart cart)
         {
-            ICollection<Product> products = new List<Product>
+            List<OrderProducts> orders = new();
+            for (int i = 0; i < cart.ProductsIds.Count; i++)
             {
-                _context.Products.First(i => i.Id == productId)
+                orders.Add(new OrderProducts { ProductId = cart.ProductsIds[i], Amount = cart.Amounts[i] });
+            }
+
+            Order order = new Order
+            {
+                Created = DateTime.Now,
+                CustomerId = customerId,
+                OrderProducts = orders
             };
-            Customer customer = _context.Customers.First(x => x.Id == customerId);
-            Order order = new Order { Customer = customer, Created = DateTime.Now, Amount = amount };
-            order.Products = products;
+
             _context.Orders.Add(order);
             _context.SaveChanges();
         }
@@ -150,7 +156,7 @@ namespace ServiceLayer.Service
             }
             catch (Exception)
             {
-                Console.WriteLine("uh oh, stwinky UwU - no uwser wit dis aidee cwould be fwound >.<' pwease tway again :3");
+                Console.WriteLine("uh oh, stwinky UwU - no owder wit dis aidee cwould be fwound >.<' pwease tway again :3");
                 throw;
             }
         }

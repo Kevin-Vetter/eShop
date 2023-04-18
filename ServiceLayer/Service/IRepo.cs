@@ -34,7 +34,7 @@ namespace ServiceLayer.Service
 
         #region Order
         //CR
-        void CreateNewOrder(int customerId, int productId, int amount);
+        void CreateNewOrder(int customerId, Cart cart);
         Order GetOrderById(int id);
         #endregion
     }

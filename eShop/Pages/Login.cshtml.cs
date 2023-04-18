@@ -40,6 +40,7 @@ namespace eShop.Pages
                     Response.Cookies.Append("loggedIn", "true");
                     Response.Cookies.Append("user", user.Email);
                     UserFound = true;
+
                     return RedirectToPage("Index");
                 }
                 catch (Exception e)

@@ -6,6 +6,5 @@ public class Order
     public DateTime Created { get; set; }
     public Customer Customer { get; set; }
     public int CustomerId { get; set; }
-    public int Amount { get; set; }
-    public ICollection<Product> Products { get; set; }
+    public ICollection<OrderProducts> OrderProducts { get; set; }
 }
