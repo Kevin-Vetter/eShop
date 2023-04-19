@@ -22,6 +22,12 @@ Only backend - nothing works yet
 
 * [x] CRUD
 * [x] Basic Unit Test
-* [ ] Unit Test Everything
-* [ ] Multiple laguage choices
+* [x] Forsiden viser et antal produkter med et billede af hver, prisen, navn og en knap til at lægge varen i kurven
+* [x] Der benyttes Paging således at forsiden kun viser et bestemt antal produkter ad gangen.
+* [x] Der er mulighed for at søge på "Brand" og på "Type" eller lignende
+* [x] Der er også fritekst-søgning
+* [ ] Der er mulighed for stigende og faldende sortering
+* [ ] Der vises et ikon med en varekurv og et antal varer i kurven. Klikkes på ikonet, vises varekurven
+* [ ] Lægges en vare i kurven, vises den opdaterede varekurv
+ 
  
