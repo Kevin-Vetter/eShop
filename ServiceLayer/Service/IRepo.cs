@@ -29,7 +29,7 @@ namespace ServiceLayer.Service
         void UpdatePopularity(int id);
         public List<Product> Search(string searchQuery);
         public List<Product> GetProductsPaging(int page, int numberOfProducts);
-        List<Product> GetAllProducts();
+        Page<Product> GetAllProducts(int page, int count, string? search);
         #endregion
 
         #region Order

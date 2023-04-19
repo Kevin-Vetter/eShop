@@ -79,7 +79,7 @@ namespace DAL
                 .RuleFor(x=> x.Description, x=>x.Lorem.Paragraphs(2));
                   
             modelBuilder.Entity<Product>()
-               .HasData(productFaker.Generate(10));
+               .HasData(productFaker.Generate(300));
 
 
             Faker<Customer> customerFaker = new Faker<Customer>()
