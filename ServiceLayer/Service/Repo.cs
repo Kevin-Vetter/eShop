@@ -1,5 +1,7 @@
-﻿using DAL;
+﻿using Azure;
+using DAL;
 using DAL.Model;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
@@ -44,11 +46,11 @@ namespace ServiceLayer.Service
             }
         }
 
-        public void UpdateCustomer(Customer newCustomer)
+        public void UpdateCustomer(int id, JsonPatchDocument<Customer> newCustomer)
         {
-
-            Customer oldCustomer = _context.Customers.First(x => x.Id == newCustomer.Id);
-            oldCustomer = newCustomer;
+            Customer oldCustomer = GetCustomerById(id);
+            newCustomer.ApplyTo(oldCustomer); ;
+            _context.SaveChanges();
 
             _context.SaveChanges();
         }
@@ -65,7 +67,7 @@ namespace ServiceLayer.Service
 
         #region Product
 
-        public Page<Product> GetAllProducts(int page, int count, string? search)
+        public DAL.Model.Page<Product> GetAllProducts(int page, int count, string? search)
         {
             IQueryable<Product> query = _context.Products.Include(x => x.Brand).Include(x => x.Category);
 
@@ -74,12 +76,12 @@ namespace ServiceLayer.Service
                 query = query.Where(x => EF.Functions.Like(x.Name, $"%{search}%") || EF.Functions.Like(x.Brand.BrandName, $"%{search}%"));
             }
 
-            return new Page<Product>() { Items = query.Page(page, count).ToList(), Total = query.Count(), CurrentPage = page, PageSize = count };
+            return new DAL.Model.Page<Product>() { Items = query.Page(page, count).ToList(), Total = query.Count(), CurrentPage = page, PageSize = count };
         }
 
-        public void CreateNewProduct(string name, decimal price, int brandId, int categoryId)
+        public void CreateNewProduct(string name, decimal price, int brandId, int categoryId, string desc, string path)
         {
-            _context.Products.Add(new Product { Name = name, Price = price, BrandId = brandId, CategoryId = categoryId });
+            _context.Products.Add(new Product { Name = name, Price = price, BrandId = brandId, CategoryId = categoryId, Description = desc, ImgPath = path});
             _context.SaveChanges();
         }
 
@@ -96,10 +98,11 @@ namespace ServiceLayer.Service
             }
         }
 
-        public void UpdateProduct(Product newProduct)
+        public void UpdateProduct(int id, JsonPatchDocument<Product> newProduct)
         {
-            Product oldProduct = _context.Products.First(x => x.Id == newProduct.Id);
-            oldProduct = newProduct;
+            Product oldProduct = GetProductById(id);
+            newProduct.ApplyTo(oldProduct);
+            _context.Products.Update(oldProduct);
 
             _context.SaveChanges();
         }
@@ -119,9 +122,9 @@ namespace ServiceLayer.Service
 
         public void UpdatePopularity(int id)
         {
-            Product product = GetProductById(id);
-            product.Popularity++;
-            UpdateProduct(product);
+            //Product product = GetProductById(id);
+            //product.Popularity++;
+            //UpdateProduct(product);
         }
         public List<Product> Search(string searchQuery)
         {

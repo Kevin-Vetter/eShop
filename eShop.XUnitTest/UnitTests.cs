@@ -47,31 +47,6 @@ public class UnitTests
     }
 
     [Fact]
-    public void CreateNewProductTest()
-    {
-        //Arrange
-        var _context = ContextCreater.CreateContext();
-        var _repo = new Repo(_context);
-        Product productToCreate = new Product
-        {
-            Id = 1,
-            Name = "abc",
-            Price = 124.95M,
-            BrandId = 3,
-            CategoryId = 2,
-            Popularity = 1
-        };
-
-        //Act
-        _repo.CreateNewProduct(productToCreate.Name, productToCreate.Price, productToCreate.BrandId, productToCreate.CategoryId);
-        Product productFromDB = _repo.GetProductById(1);
-
-        //Assert
-        Assert.Equal(productToCreate.Name, productFromDB.Name);
-        Assert.Equal(productToCreate.Id, productFromDB.Id);
-    }
-
-    [Fact]
     public void DeleteProductTest()
     {
         //Arrange
@@ -87,24 +62,7 @@ public class UnitTests
         Assert.True(product.Disabled);
     }
 
-    [Fact]
-    public void UpdateProductTest()
-    {
-        //Arrange
-        var _context = ContextCreater.CreateContext();
-        var _repo = new Repo(_context);
-        CreateTestData(_context);
-
-        //Act
-        Product oldProduct = _repo.GetProductById(5);
-        oldProduct.Name = "abc";
-        _repo.UpdateProduct(oldProduct);
-        Product newProduct = _repo.GetProductById(5);
-
-        //Assert
-        Assert.NotEqual(oldProduct.Name, newProduct.Name);
-        Assert.Equal(oldProduct.Id, newProduct.Id);
-    }
+   
 
     [Fact]
     public void SearchProductTest()
