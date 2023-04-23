@@ -43,7 +43,7 @@ namespace eShop.Pages
 
                     return RedirectToPage("Index");
                 }
-                catch (Exception e)
+                catch (NullReferenceException e)
                 {
                     Response.Cookies.Append("loggedIn", "false");
                     Console.WriteLine(e);
