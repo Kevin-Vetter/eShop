@@ -31,6 +31,8 @@ public class UnitTests
             .RuleFor(x => x.Price, x => x.Commerce.Price().First())
             .RuleFor(x => x.BrandId, x => x.Random.Number(4) + 1)
             .RuleFor(x => x.CategoryId, x => x.Random.Number(4) + 1)
+            .RuleFor(x => x.Description, x => x.Lorem.Text())
+            .RuleFor(x => x.ImgPath, x => x.Lorem.Word())
             .RuleFor(x => x.Popularity, x => x.Random.Number());
         productFaker.Generate(10).ForEach(pf => _context.Products.Add(pf));
         _context.SaveChanges();
@@ -64,8 +66,12 @@ public class UnitTests
 
    
 
-    [Fact]
-    public void SearchProductTest()
+    [Theory]
+    [InlineData(1)]
+    [InlineData(2)]
+    [InlineData(3)]
+    [InlineData(4)]
+    public void SearchProductTest(int id)
     {
         //Arrange
         var _context = ContextCreater.CreateContext();
@@ -73,8 +79,8 @@ public class UnitTests
         CreateTestData(_context);
 
         //Act
-        Product productToFind = _repo.GetProductById(5);
-        Product productFound = _repo.Search("Metal").First();
+        Product productToFind = _repo.GetProductById(id);
+        Product productFound = _repo.Search(productToFind.Name).First();
 
         //Assert
         Assert.Equal(productToFind.Name, productFound.Name);
