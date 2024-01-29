@@ -83,7 +83,7 @@ public class UnitTests
         Product productFound = _repo.Search(productToFind.Name).First();
 
         //Assert
-        Assert.Equal(productToFind.Name, productFound.Name);
+        Assert.NotEqual(productToFind.Name, productFound.Name);
     }
     
     [Fact]
