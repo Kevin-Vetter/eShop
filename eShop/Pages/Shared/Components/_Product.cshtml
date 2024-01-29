@@ -1,0 +1,43 @@
+﻿@using DAL.Model;
+@model Product
+
+
+<div class="col-4">
+    <div class="card" style="width: 18rem; ">
+        <img class="card-img-top" src="/pics/@Model.ImgPath" alt="Card image cap">
+        <div class="card-body border-top">
+            <h4 class="card-title">@Model.Name</h4>
+            <h5 class="card-title">@Model.Price</h5>
+            <p class="card-text">@Model.Brand.BrandName</p>
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal-@Model.Id">
+                View Product
+            </button>
+
+        </div>
+    </div>
+</div>
+
+<!-- Product Modal -->
+
+<!-- Modal -->
+<div class="modal fade mt-0" id="exampleModal-@Model.Id" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">@Model.Name</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img class="img-fluid" src="/pics/@Model.ImgPath" />
+                <h4>Price</h4>
+                <p>@Model.Price</p>
+                <h4>Description</h4>
+                <p>@Model.Description</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" onclick="AddToCart('@Model.Id')">Add To Cart</button>
+            </div>
+        </div>
+    </div>
+</div>
